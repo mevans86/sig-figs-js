@@ -13,3 +13,5 @@ It uses an [expression parser](https://github.com/silentmatt/js-expression-eval/
 **Unitary functions:** sin(a), cos(a), tan(a), asin(a), acos(a), atan(a), sqrt(a), log(a), abs(a), ceil(a), floor(a), round(a), exp(a), random(a), fac(a)
 
 **Binary functions:** pyt(a, b), pow(a, b) or a ^ b, min(a, b), max(a, b), a % b, atan2(a, b)
+
+Note that the calculator depends on jQuery and Bootstrap, which aren't included here.
