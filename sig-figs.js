@@ -15,7 +15,7 @@ function SigFloat(str) {
     if (typeof str == 'number') {
         this.fixed = str.toString();
     } else if (parseFloat(str)) {
-        this.fixed = str;
+        this.fixed = str.toString();
     } else if (str.toString()) {
         this.fixed = str.toString(); // For creating a SigFloat from a SigFloat...?
     } else {

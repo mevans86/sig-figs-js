@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Metallacycle &middot; Significant Figures Calculator</title>
 
-	<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/lib/glyphicons/css/bootstrap-glyphicons.css">
 	<style>
 		.term-btn-group {
@@ -45,7 +45,7 @@
 		}
 	</style>
 
-    <script type="text/javascript" src="/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 </head>
 <body>
 	<div class="container" id="term-container">
@@ -66,7 +66,7 @@
 		<button class="btn btn-default btn-lg sig-clear" onclick="clearDisplay();" title="Clear the display."><span class="glyphicon glyphicon-remove-circle"></span></button>
 	</div>
 
-	<script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="sig-figs.js"></script>
 	<script type="text/javascript" src="parser.js"></script>
 	<script type="text/javascript" src="parser-sig.js"></script>
@@ -76,6 +76,7 @@
 		var nextExp = 0;
 		var significance = true;
 		var expArray = [ ];
+		var result;
 
 		function clearDisplay() {
 			$('#term-container').html('<span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);">Enter an expression here.</div>');
@@ -89,7 +90,7 @@
 				nextExp++;
 				
 				var expression = $(element).html();
-				var result = significance ? ParserSignificance.evaluate(expression) : Parser.evaluate(expression);
+				result = significance ? ParserSignificance.evaluate(expression) : Parser.evaluate(expression);
 				if(! significance) result += '&nbsp;<span class="label label-primary insignificance-label">significance off</span>';
 				expArray.push(expression);
 
