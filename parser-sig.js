@@ -209,10 +209,10 @@ var ParserSignificance = (function (scope) {
 					f = nstack.pop();
 					if (f.apply && f.call) {
 						if (Object.prototype.toString.call(n1) == "[object Array]") {
-							nstack.push(f.apply(undefined, n1));
+							nstack.push(new SigFloat(f.apply(undefined, n1)));
 						}
 						else {
-							nstack.push(f.call(undefined, n1));
+							nstack.push(new SigFloat(f.call(undefined, n1)));
 						}
 					}
 					else {
@@ -320,7 +320,9 @@ var ParserSignificance = (function (scope) {
 	function concat(a, b) {
 		return new SigFloat('' + a.toString() + b.toString());
 	}
-
+	function pow(a, b) {
+		return new SigFloat(Math.pow(a, b));
+	}
 	function neg(a) {
 		return new SigFloat(-a.toFloat());
 	}
@@ -385,7 +387,7 @@ var ParserSignificance = (function (scope) {
 			"*": mul,
 			"/": div,
 			"%": mod,
-			"^": Math.pow,
+			"^": pow,
 			",": append,
 			"||": concat
 		};
@@ -396,7 +398,7 @@ var ParserSignificance = (function (scope) {
 			"min": Math.min,
 			"max": Math.max,
 			"pyt": pyt,
-			"pow": Math.pow,
+			"pow": pow,
 			"atan2": Math.atan2
 		};
 
