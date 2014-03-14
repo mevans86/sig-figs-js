@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Metallacycle &middot; Significant Figures Calculator</title>
+
+	<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/lib/glyphicons/css/bootstrap-glyphicons.css">
+	<style>
+		.term-btn-group {
+			bottom: 20px;
+			right: 20px;
+			position: fixed;
+		}
+
+		.insignificance-label {
+			font-size: 10px;
+		}
+
+		.instructions {
+			display: none;
+			bottom: 60px;
+			right: 20px;
+			max-width: 800px;
+			position: fixed;
+		}
+
+		.term-expression {
+			display: inline-block;
+			width: 95%;
+			outline: none;
+		}
+
+		.term-result {
+			color: green;
+		}
+
+		#term-container {
+			width: 100%;
+			padding-top: 20px;
+			font-family: Monaco,Menlo,Consolas,sans-serif;
+			font-size: 16px;
+			color: #000080;
+		}
+	</style>
+
+    <script type="text/javascript" src="/lib/jquery.min.js"></script>
+</head>
+<body>
+	<div class="container" id="term-container">
+		<span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-1" onkeydown="evaluateExpression(event, this);">Enter an expression here.</div>
+	</div>
+
+	<div class="container instructions well">
+		<p>This calculator takes significant digits into account and applies the <a href="http://www.usca.edu/chemistry/genchem/sigfig.htm" target="_blank">rules of significant figures</a> to calculations. It uses an <a href="https://github.com/silentmatt/js-expression-eval/tree/master" target="_blank">expression parser</a> developed originally by <a href="">Silent Matt</a> as well as my SigFloat Javascript object (see sig-figs.js in this directory).</p>
+
+		<p><b>Unitary functions:</b> <code>sin(a)</code>, <code>cos(a)</code>, <code>tan(a)</code>, <code>asin(a)</code>, <code>acos(a)</code>, <code>atan(a)</code>, <code>sqrt(a)</code>, <code title="natural log">log(a)</code>, <code>abs(a)</code>, <code>ceil(a)</code>, <code>floor(a)</code>, <code>round(a)</code>, <code>exp(a)</code>, <code title="random number between 0 and a">random(a)</code>, <code title="factorial">fac(a)</code></p>
+
+		<p><b>Binary functions:</b> <code title="Euclidean distance">pyt(a, b)</code>, <code>pow(a, b)</code> or <code>a ^ b</code>, <code>min(a, b)</code>, <code>max(a, b)</code>, <code title="modulus">a % b</code>, <code title="arctangent of a/b">atan2(a, b)</code></p>
+	</div>
+	
+	<div class="btn-group term-btn-group">
+		<button class="btn btn-default btn-lg help-button" onclick="$('.instructions').toggle(); $(this).toggleClass('active')"><span class="glyphicon glyphicon-info-sign"></span></button>
+		<button class="btn btn-primary btn-lg sig-toggle active" onclick="$(this).toggleClass('active'); significance = !significance;" title="Turn significance on and off (on by default)."><span class="glyphicon glyphicon-book"></span></button>
+		<button class="btn btn-default btn-lg sig-clear" onclick="clearDisplay();" title="Clear the display."><span class="glyphicon glyphicon-remove-circle"></span></button>
+	</div>
+
+	<script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="sig-figs.js"></script>
+	<script type="text/javascript" src="parser.js"></script>
+	<script type="text/javascript" src="parser-sig.js"></script>
+	<script type="text/javascript">
+		var expCount = 1;
+		var prevExp = -1;
+		var nextExp = 0;
+		var significance = true;
+		var expArray = [ ];
+
+		function clearDisplay() {
+			$('#term-container').html('<span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);">Enter an expression here.</div>');
+		}
+
+		function evaluateExpression(e, element) {
+			$('br', element).remove();
+			if (e.keyCode == 13) {
+				expCount++;
+				prevExp++;
+				nextExp++;
+				
+				var expression = $(element).html();
+				var result = significance ? ParserSignificance.evaluate(expression) : Parser.evaluate(expression);
+				if(! significance) result += '&nbsp;<span class="label label-primary insignificance-label">significance off</span>';
+				expArray.push(expression);
+
+				$('#term-container').append('<br><span class="term-result">'+ result + '</span><br><span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);"> </div>');
+				$(element).attr('contenteditable', 'false');
+				$('#term-expression-' + expCount).focus();
+				e.preventDefault();
+			} else if (e.keyCode == 38 && prevExp >= 0) {
+				$(element).html(expArray[prevExp]);
+				if (prevExp > 0) prevExp--;
+				nextExp = prevExp + 1;
+			} else if(e.keyCode == 40) {
+				$(element).html(expArray[nextExp]);
+				if (nextExp < expCount - 1) nextExp++;
+				prevExp = nextExp - 1;
+			}
+		}
+	</script>
+</body>
+</html>
