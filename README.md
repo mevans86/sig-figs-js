@@ -14,4 +14,4 @@ It uses an [expression parser](https://github.com/silentmatt/js-expression-eval/
 
 **Binary functions:** pyt(a, b), pow(a, b) or a ^ b, min(a, b), max(a, b), a % b, atan2(a, b)
 
-Note that the calculator depends on jQuery and Bootstrap, which aren't included here.
+Note that the calculator depends on jQuery and Bootstrap, which aren't included here. See [here](http://www.metallacycle.com/chemistry/significant-figures/calculator.html) for a working demo.
