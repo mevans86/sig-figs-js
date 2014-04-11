@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Metallacycle &middot; Significant Figures Calculator</title>
 
-	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="/lib/glyphicons/css/bootstrap-glyphicons.css">
 	<style>
 		.term-btn-group {
@@ -30,6 +30,7 @@
 			display: inline-block;
 			width: 95%;
 			outline: none;
+			border: none;
 		}
 
 		.term-result {
@@ -45,7 +46,7 @@
 		}
 	</style>
 
-	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="/lib/jquery.min.js"></script>
 </head>
 <body>
 	<div class="container" id="term-container">
@@ -66,7 +67,7 @@
 		<button class="btn btn-default btn-lg sig-clear" onclick="clearDisplay();" title="Clear the display."><span class="glyphicon glyphicon-remove-circle"></span></button>
 	</div>
 
-	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/lib/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="sig-figs.js"></script>
 	<script type="text/javascript" src="parser.js"></script>
 	<script type="text/javascript" src="parser-sig.js"></script>
@@ -76,7 +77,6 @@
 		var nextExp = 0;
 		var significance = true;
 		var expArray = [ ];
-		var result;
 
 		function clearDisplay() {
 			$('#term-container').html('<span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);">Enter an expression here.</div>');
@@ -95,6 +95,7 @@
 				expArray.push(expression);
 
 				$('#term-container').append('<br><span class="term-result">'+ result + '</span><br><span class="term-line-start">&gt;&nbsp;</span><input type="text" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);" />');
+				$(element).addClass('disabled');
 				$('#term-expression-' + expCount).focus();
 				e.preventDefault();
 			} else if (e.keyCode == 38 && prevExp >= 0) {
