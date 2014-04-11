@@ -49,11 +49,11 @@
 </head>
 <body>
 	<div class="container" id="term-container">
-		<span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-1" onkeydown="evaluateExpression(event, this);">Enter an expression here.</div>
+		<span class="term-line-start">&gt;&nbsp;</span><input type="text" value="Enter an expression here." class="term-expression" id="term-expression-1" onkeydown="evaluateExpression(event, this);" />
 	</div>
 
 	<div class="container instructions well">
-		<p>This calculator takes significant digits into account and applies the <a href="http://www.usca.edu/chemistry/genchem/sigfig.htm" target="_blank">rules of significant figures</a> to calculations. It uses an <a href="https://github.com/silentmatt/js-expression-eval/tree/master" target="_blank">expression parser</a> developed originally by <a href="">Silent Matt</a> as well as my SigFloat Javascript object (see sig-figs.js in this directory).</p>
+		<p>This calculator takes significant digits into account and applies the <a href="http://www.usca.edu/chemistry/genchem/sigfig.htm" target="_blank">rules of significant figures</a> to calculations. It uses an <a href="https://github.com/silentmatt/js-expression-eval/tree/master" target="_blank">expression parser</a> developed originally by <a href="">Silent Matt</a> as well as my SigFloat Javascript object (see sig-figs.js in this directory). Use the <kbd>@</kbd> symbol for scientific notation (e.g., 5.02@3 = 5.02 &times; 10<sup>3</sup>).</p>
 
 		<p><b>Unitary functions:</b> <code>sin(a)</code>, <code>cos(a)</code>, <code>tan(a)</code>, <code>asin(a)</code>, <code>acos(a)</code>, <code>atan(a)</code>, <code>sqrt(a)</code>, <code title="natural log">log(a)</code>, <code>abs(a)</code>, <code>ceil(a)</code>, <code>floor(a)</code>, <code>round(a)</code>, <code>exp(a)</code>, <code title="random number between 0 and a">random(a)</code>, <code title="factorial">fac(a)</code></p>
 
@@ -62,7 +62,7 @@
 	
 	<div class="btn-group term-btn-group">
 		<button class="btn btn-default btn-lg help-button" onclick="$('.instructions').toggle(); $(this).toggleClass('active')"><span class="glyphicon glyphicon-info-sign"></span></button>
-		<button class="btn btn-primary btn-lg sig-toggle active" onclick="$(this).toggleClass('active'); significance = !significance;" title="Turn significance on and off (on by default)."><span class="glyphicon glyphicon-book"></span></button>
+		<button class="btn btn-primary btn-lg sig-toggle active" onclick="$(this).toggleClass('active'); significance = !significance; $('.term-expression:last').focus();" title="Turn significance on and off (on by default)."><span class="glyphicon glyphicon-book"></span></button>
 		<button class="btn btn-default btn-lg sig-clear" onclick="clearDisplay();" title="Clear the display."><span class="glyphicon glyphicon-remove-circle"></span></button>
 	</div>
 
@@ -89,13 +89,12 @@
 				prevExp++;
 				nextExp++;
 				
-				var expression = $(element).html();
-				result = significance ? ParserSignificance.evaluate(expression) : Parser.evaluate(expression);
+				var expression = $(element).val();
+				var result = significance ? ParserSignificance.evaluate(expression) : Parser.evaluate(expression);
 				if(! significance) result += '&nbsp;<span class="label label-primary insignificance-label">significance off</span>';
 				expArray.push(expression);
 
-				$('#term-container').append('<br><span class="term-result">'+ result + '</span><br><span class="term-line-start">&gt;&nbsp;</span><div contenteditable="true" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);"> </div>');
-				$(element).attr('contenteditable', 'false');
+				$('#term-container').append('<br><span class="term-result">'+ result + '</span><br><span class="term-line-start">&gt;&nbsp;</span><input type="text" class="term-expression" id="term-expression-' + expCount + '" onkeydown="evaluateExpression(event, this);" />');
 				$('#term-expression-' + expCount).focus();
 				e.preventDefault();
 			} else if (e.keyCode == 38 && prevExp >= 0) {
@@ -108,6 +107,10 @@
 				prevExp = nextExp - 1;
 			}
 		}
+
+		$(document).ready(function() {
+			$('#term-expression-1').focus();
+		});
 	</script>
 </body>
 </html>
